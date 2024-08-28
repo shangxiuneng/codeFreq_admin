@@ -1,26 +1,30 @@
 package model
 
 import (
-	"database/sql"
 	"time"
 )
 
-type Question struct {
-	Id              int    `gorm:"column:id;type:int(11);AUTO_INCREMENT;primary_key" json:"id"`
-	QuestionId      int    `gorm:"column:question_id;type:int(11);unique;NOT NULL" json:"question_id"`
-	FrontQuestionId string `gorm:"column:front_question_id;type:varchar(255);NOT NULL" json:"front_question_id"`
-	Title           string `gorm:"column:title;type:varchar(255);NOT NULL" json:"title"`
-	// TODO
-	Difficulty int          `gorm:"column:difficulty;type:varchar(50)" json:"difficulty"`
-	SlugTitle  string       `gorm:"column:slug_title;type:varchar(255)" json:"slug_title"`
-	Expand     int          `gorm:"column:expand;type:tinyint(1);default:0" json:"expand"`
-	CreatedAt  time.Time    `gorm:"column:created_at;type:timestamp;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt  time.Time    `gorm:"column:updated_at;type:timestamp;default:CURRENT_TIMESTAMP" json:"updated_at"`
-	DeletedAt  sql.NullTime `gorm:"column:deleted_at;type:timestamp" json:"deleted_at"`
+// TQuestion undefined
+type TQuestion struct {
+	ID              int64     `json:"id" gorm:"id"`
+	QuestionId      int       `json:"question_id" gorm:"question_id"`
+	FrontQuestionId string    `json:"front_question_id" gorm:"front_question_id"`
+	Title           string    `json:"title" gorm:"title"`
+	Difficulty      int       `json:"difficulty" gorm:"difficulty"`
+	SlugTitle       string    `json:"slug_title" gorm:"slug_title"`
+	Expand          int8      `json:"expand" gorm:"expand"`
+	Tags            string    `json:"tags" gorm:"tags"`
+	Company         string    `json:"company" gorm:"company"`
+	Freq            int64     `json:"freq" gorm:"freq"`
+	LastTime        string    `json:"last_time" gorm:"last_time"`
+	QuestionSet     string    `json:"question_set" gorm:"question_set"`
+	CreatedAt       time.Time `json:"created_at" gorm:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at" gorm:"updated_at"`
+	DeletedAt       time.Time `json:"deleted_at" gorm:"deleted_at"`
 }
 
-func (Question) TableName() string {
-	//实现TableName接口，以达到结构体和表对应，如果不实现该接口，并未设置全局表名禁用复数，gorm会自动扩展表名为articles（结构体+s）
+// TableName 表名称
+func (*TQuestion) TableName() string {
 	return "t_question"
 }
 

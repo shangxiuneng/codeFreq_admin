@@ -6,6 +6,7 @@ import (
 	"codeFreq_admin/model"
 	"context"
 	"fmt"
+	"strings"
 )
 
 type QuestionService interface {
@@ -30,24 +31,6 @@ func (q *questionService) GetQuestionList(param model.QuestionListParam) ([]*mod
 		return nil, err
 	}
 
-	var questionIDList []int
-	for _, v := range questionList {
-		questionIDList = append(questionIDList, v.QuestionId)
-	}
-
-	questionStaticList, err := dal.NewQuestionStaticClient(mysql.DB).QuestionStaticListByID(questionIDList)
-
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	questionStaticMapping := make(map[int]*model.QuestionStatistics)
-
-	for _, v := range questionStaticList {
-		questionStaticMapping[v.QuestionID] = v
-	}
-
 	/*
 		QuestionId      int       `json:"question_id"`
 		FrontQuestionId string    `json:"front_question_id"`
@@ -63,11 +46,13 @@ func (q *questionService) GetQuestionList(param model.QuestionListParam) ([]*mod
 	*/
 	var resp []*model.QuestionResp
 	for _, question := range questionList {
+
 		resp = append(resp, &model.QuestionResp{
 			QuestionId:      question.QuestionId,
 			FrontQuestionId: question.FrontQuestionId,
 			Title:           question.Title,
 			Difficulty:      model.DifficultMapping[question.Difficulty],
+			Tags:            strings.Split(question.Tags, ","),
 		})
 	}
 
