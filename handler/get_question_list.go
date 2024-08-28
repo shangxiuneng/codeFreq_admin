@@ -24,6 +24,14 @@ func GetQuestionList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	if param.Page < 0 {
+		param.Page = 1
+	}
+
+	if param.Size < 0 || param.Size > 50 {
+		param.Size = 50
+	}
+
 	fmt.Println(param)
 	data, err := service.NewQuestionService(ctx).GetQuestionList(param)
 	if err != nil {

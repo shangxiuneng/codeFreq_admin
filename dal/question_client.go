@@ -6,7 +6,7 @@ import (
 )
 
 type QuestionClient interface {
-	QueryQuestionList(page, size int) ([]*model.TQuestion, int, error)
+	QueryQuestionList(param model.QuestionListParam) ([]*model.TQuestion, int, error)
 }
 
 type questionClient struct {
@@ -20,12 +20,24 @@ func NewQuestionClient(db *gorm.DB) QuestionClient {
 }
 
 // QueryQuestionList 查询题目列表
-func (q *questionClient) QueryQuestionList(page, size int) ([]*model.TQuestion, int, error) {
+func (q *questionClient) QueryQuestionList(param model.QuestionListParam) ([]*model.TQuestion, int, error) {
 
 	var list []*model.TQuestion
+	session := q.db.Model(&model.TQuestion{})
+	if param.Title != "" {
+		session = session.Where("title like ? or question_id = ?",
+			"%"+param.Title+"%", param.Title)
+	}
+	if param.Company != "" {
+		session = session.Where("company like ?", "%"+param.Company+"%")
+	}
 
-	err := q.db.Model(&model.TQuestion{}).
-		Offset((page - 1) * size).
-		Limit(size).Find(&list).Error
+	if param.Difficult != 0 {
+		session = session.Where("difficulty = ?", param.Difficult)
+	}
+
+	err := session.
+		Offset((param.Page - 1) * param.Size).
+		Limit(param.Size).Find(&list).Error
 	return list, 0, err
 }

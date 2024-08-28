@@ -25,7 +25,7 @@ func NewQuestionService(ctx context.Context) QuestionService {
 
 // GetQuestionList 获取题目列表
 func (q *questionService) GetQuestionList(param model.QuestionListParam) ([]*model.QuestionResp, error) {
-	questionList, _, err := dal.NewQuestionClient(mysql.DB).QueryQuestionList(param.Page, param.Size)
+	questionList, _, err := dal.NewQuestionClient(mysql.DB).QueryQuestionList(param)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

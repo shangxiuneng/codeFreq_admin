@@ -29,8 +29,12 @@ func (*TQuestion) TableName() string {
 }
 
 type QuestionListParam struct {
-	Page int `query:"page"`
-	Size int `query:"size"`
+	Page      int    `query:"page"`
+	Size      int    `query:"size"`
+	Company   string `query:"company"`   // 公司
+	OrderBy   string `query:"order_by"`  // 排序规则
+	Title     string `query:"title"`     // 标题
+	Difficult int    `query:"difficult"` // 难度
 }
 
 type QuestionResp struct {
@@ -45,16 +49,4 @@ type QuestionResp struct {
 	Tags            []string  `json:"tags"`             // 题目所属的标签
 	Companies       []string  `json:"companies"`        // 考察该题目的公司
 	CreatedAt       time.Time `json:"created_at"`
-}
-
-const (
-	Easy   = 1
-	Middle = 2
-	Hard   = 3
-)
-
-var DifficultMapping = map[int]string{
-	Easy:   "容易",
-	Middle: "中等",
-	Hard:   "困难",
 }
