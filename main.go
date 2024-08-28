@@ -1,22 +1,17 @@
 package main
 
 import (
-	"context"
-
-	"github.com/cloudwego/hertz/pkg/app"
+	"codeFreq_admin/dal/mysql"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func main() {
 	h := server.Default()
-	/*
-	   初始化mysql连接
-	*/
-	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
-		c.JSON(consts.StatusOK, utils.H{"message": "nihao"})
-	})
+
+	// 初始化mysql连接
+	mysql.Init()
+
+	registerRouter(h)
 
 	h.Spin()
 }
