@@ -6,7 +6,7 @@ CREATE TABLE `t_question` (
 `title` varchar(255) NOT NULL DEFAULT '',  -- 题目的标题
 `difficulty` int NOT NULL DEFAULT '0',  -- 题目难度 1 简单 2 中等 3 困难
 `slug_title` varchar(255) NOT NULL DEFAULT '',  -- leetcode
-`expand` tinyint(1) DEFAULT '0',
+`expand` tinyint(1) DEFAULT '0', -- 是否为leetcode的题目
 `tags` varchar(255) not null default '',-- 该题目的标签 数组,动态规划,双指针,
 --
 `company` varchar(255) not null default '',-- 考察过该题目的公司
